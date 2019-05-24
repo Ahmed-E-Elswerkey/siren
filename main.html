@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>Emergency Request System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="keywords" content="Lite Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+    SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- Custom Theme files -->
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="all">
+    <!-- font-awesome icons -->
+    <link href="css/fontawesome-all.min.css" rel="stylesheet">
+    <!-- //Custom Theme files -->
+    <!-- online-fonts -->
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <!-- //online-fonts -->
+    <style>
+        .banner{
+            background:black;
+        }
+        .banner header nav{
+            position:relative;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- banner -->
+    <div class="banner" id="home">
+        <!-- header -->
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary pt-3">
+                <h1>
+                    <a class="navbar-brand text-white" href="index.html">
+                        <i class="fas fa-ambulance"></i> Siren
+                    </a>
+                </h1>
+                <button class="navbar-toggler ml-md-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-lg-auto text-center">
+                        <li class="nav-item  mr-3 mt-lg-0 mt-3">
+                            <a class="nav-link" href="index.html">Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active  mr-3 mt-lg-0 mt-3" onclick="window.location.replace('main.html')">
+                            <a class="nav-link scroll" href="./main.html">Requests</a>
+                        </li>
+                       <!--  <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item scroll" href="#process">Process</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item scroll" href="#partners">Partners</a>
+                            </div>
+                        </li> -->
+                        <li class="nav-item mr-3 mt-lg-0 mt-3">
+                            <a class="nav-link scroll" href="#contact">Contact</a>
+                        </li>
+                        <li class="nav-item not-reg">
+                            <a class="nav-link scroll" href="#register">register</a>
+                        </li>
+                        <li class="not-reg">
+                            <button type="button" class="btn  ml-lg-2 w3ls-btn" data-toggle="modal" aria-pressed="false" data-target="#exampleModal">
+                                Login
+                            </button>
+                        </li>
+                        <li class="reg hide">
+                            <button type="button" class="btn  ml-lg-2 w3ls-btn" onclick="firebase.auth().signOut();window.location.reload()">
+                                Log Out
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </header>
+       
+    </div>
+        
+        <center>
+            <fieldset>
+                <legend>Send request</legend>
+    			<form action="#" onsubmit="sendReq(this);return false">
+                    info:<input type="text" autocomplete="emergency" >
+                    <input type="submit" value="submit">
+                </form>
+    		</fieldset>
+        </center>
+        
+		<div id="reqs"></div>
+        
+        <div id="map"></div>
+        <input type="checkbox" name="pop-checkbox" id="pop-checkbox">
+        <div id="pop">
+            <div id="pop-body">
+                <p id="pop-info"></p>
+                <select name="" id="pop-vehicles">
+                    <option value="">Select a vehicle</option>
+                </select>
+                <label for="pop-checkbox">
+                    <button>Ok</button>
+                    <button>Cancel</button>
+                </label>
+            </div>
+        </div>
+        <script src="./js/keys.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-database.js"></script>
+        <script>
+            var firebaseConfig = {
+                apiKey: fireKey,
+                authDomain: "findo-1997.firebaseapp.com",
+                databaseURL: "https://findo-1997.firebaseio.com",
+                projectId: "findo-1997",
+                storageBucket: "findo-1997.appspot.com",
+                messagingSenderId: "759198778944",
+                appId: "1:759198778944:web:bb2b441ba8e8d6af"
+            };
+            firebase.initializeApp(firebaseConfig);
+        </script>
+		<script src="./js/index.js"></script>
+        <script id="map-cdn" async defer></script>
+        <script>document.getElementById('map-cdn').setAttribute('src',"https://maps.googleapis.com/maps/api/js?key="+mapsKey+"&callback=initMap")</script>
+        <script>
+                var map;
+                function initMap() {
+                  map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: -34.397, lng: 150.644},
+                    zoom: 8
+                  });
+                }
+              </script>
+
+	</body>
+</html>
