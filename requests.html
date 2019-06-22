@@ -57,8 +57,8 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item active  mr-3 mt-lg-0 mt-3" onclick="window.location.replace('main.html')">
-                            <a class="nav-link scroll" href="./main.html">Requests</a>
+                        <li class="nav-item active  mr-3 mt-lg-0 mt-3" onclick="if(uid) window.location.replace('main.html')">
+                            <a class="nav-link scroll" href="#">Requests</a>
                         </li>
                        <!--  <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -83,6 +83,11 @@
                             </button>
                         </li>
                         <li class="reg hide">
+                            <button type="button" id="st-name" class="btn  ml-lg-2 w3ls-btn" onclick="">
+                               
+                            </button>
+                        </li>
+                        <li class="reg hide">
                             <button type="button" class="btn  ml-lg-2 w3ls-btn" onclick="firebase.auth().signOut();window.location.reload()">
                                 Log Out
                             </button>
@@ -96,30 +101,36 @@
     </div>
         
         <center>
-            <fieldset>
+            <fieldset style="display: inline-block">
                 <legend>Send request</legend>
     			<form action="#" onsubmit="sendReq(this);return false">
                     info:<input type="text" autocomplete="emergency" >
                     <input type="submit" value="submit">
                 </form>
-    		</fieldset>
+            </fieldset>
+            <div style="display: inline-block;height:9vh;background:black;width:1px;margin:auto 1rem"></div>
+            <fieldset style="display: inline-block">
+                <legend>Add vehicle</legend>
+                <input type="button" onclick='addVeh()' value='+'>
+            </fieldset>
+            <h6 id="veh-num"></h6>
         </center>
         
 		<div id="reqs"></div>
         
         <div id="map"></div>
         <input type="checkbox" name="pop-checkbox" id="pop-checkbox">
-        <div id="pop">
-            <div id="pop-body">
+        <div id="pop" class="hide" onclick="toggle($I('pop'))">
+            <form action="" id="pop-sub" onsubmit="response(this);return false;" onmouseover="on=true" onmouseout="on=false">
                 <p id="pop-info"></p>
-                <select name="" id="pop-vehicles">
+                <select name="" id="pop-vehicles" required>
                     <option value="">Select a vehicle</option>
                 </select>
-                <label for="pop-checkbox">
-                    <button>Ok</button>
-                    <button>Cancel</button>
-                </label>
-            </div>
+                <div>
+                    <button class="btn btn-primary">Send</button>
+                    <!-- <button type="reset" onclick="toggle($I('pop'))">Cancel</button> -->
+                </div>
+            </form>
         </div>
         <script src="./js/keys.js"></script>
 
@@ -129,12 +140,12 @@
         <script>
             var firebaseConfig = {
                 apiKey: fireKey,
-                authDomain: "findo-1997.firebaseapp.com",
-                databaseURL: "https://findo-1997.firebaseio.com",
-                projectId: "findo-1997",
-                storageBucket: "findo-1997.appspot.com",
-                messagingSenderId: "759198778944",
-                appId: "1:759198778944:web:bb2b441ba8e8d6af"
+                authDomain: "siren-5f6ff.firebaseapp.com",
+                databaseURL: "https://siren-5f6ff.firebaseio.com",
+                projectId: "siren-5f6ff",
+                storageBucket: "siren-5f6ff.appspot.com",
+                messagingSenderId: "924664842531",
+                appId: "1:924664842531:web:5d7d22a62381344e"
             };
             firebase.initializeApp(firebaseConfig);
         </script>

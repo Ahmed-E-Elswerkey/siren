@@ -55,8 +55,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item  mr-3 mt-lg-0 mt-3" onclick="window.location.replace('main.html')">
-                            <a class="nav-link scroll" href="./main.html">Requests</a>
+                        <li class="nav-item  mr-3 mt-lg-0 mt-3" onclick="window.location.replace('requests.html')">
+                            <a class="nav-link scroll" href="./requests.html">Requests</a>
                         </li>
                         <!-- <li class="nav-item dropdown mr-3 mt-lg-0 mt-3">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -659,16 +659,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-database.js"></script>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script>
-            var firebaseConfig = {
-                apiKey: fireKey,
-                authDomain: "findo-1997.firebaseapp.com",
-                databaseURL: "https://findo-1997.firebaseio.com",
-                projectId: "findo-1997",
-                storageBucket: "findo-1997.appspot.com",
-                appId: "1:759198778944:web:bb2b441ba8e8d6af"
-            };
-            firebase.initializeApp(firebaseConfig);
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyClyHhkF9J0gB8MLaqhiWZTwynPE-FXygM",
+            authDomain: "siren-5f6ff.firebaseapp.com",
+            databaseURL: "https://siren-5f6ff.firebaseio.com",
+            projectId: "siren-5f6ff",
+            storageBucket: "siren-5f6ff.appspot.com",
+            messagingSenderId: "924664842531",
+            appId: "1:924664842531:web:5d7d22a62381344e"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
         </script>
 		<script src="./js/index.js"></script>
 </body>
