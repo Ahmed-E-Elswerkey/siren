@@ -283,11 +283,26 @@ function response(e){
             forcedDisplay()
             ref.child('Customers Requests/'+e.getAttribute('data-key')).once('value',m=>{
                 // cl($I('pop-vehicles').options[$I('pop-vehicles').selectedIndex].getAttribute('data-key'))
+                var long,lat,inf
+                if(m.val().info == undefined){
+                    m.val().l.forEach(d=>{
+                        data[da] = d
+                        da++
+                    })
+                    lat = data[0],long = data[1]
+                    cl('data from g child ' + lat + ' ' + long)
+                    inf = ''
+                }
+                else {
+                    lat = m.val().lat,long = m.val().long
+                    inf = m.val().info
+                    cl('data from info child')
+                }
                 ref.child('accidents/'+$I('pop-vehicles').options[$I('pop-vehicles').selectedIndex].getAttribute('data-key')).set({
                     [m.key]:{
-                        lat:m.val().lat,
-                        longtude:m.val().long,
-                        info:m.val().info,
+                        lat:lat,
+                        longtude:long,
+                        info:inf,
                         status:m.val().status
                     }
                 })
