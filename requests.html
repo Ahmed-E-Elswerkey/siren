@@ -101,7 +101,7 @@
     </div>
         
         <center>
-            <fieldset style="display: inline-block">
+            <!-- <fieldset style="display: inline-block">
                 <legend>Send request</legend>
     			<form action="#" onsubmit="sendReq(this);return false">
                     info:<input type="text" autocomplete="emergency" >
@@ -112,7 +112,7 @@
             <fieldset style="display: inline-block">
                 <legend>Add vehicle</legend>
                 <input type="button" onclick='addVeh()' value='+'>
-            </fieldset>
+            </fieldset> -->
             <h6 id="veh-num"></h6>
         </center>
         
@@ -121,11 +121,16 @@
         <div id="map"></div>
         <input type="checkbox" name="pop-checkbox" id="pop-checkbox">
         <div id="pop" class="hide" onclick="toggle($I('pop'))">
-            <form action="" id="pop-sub" onsubmit="response(this);return false;" onmouseover="on=true" onmouseout="on=false">
+            <form action="#" id="pop-sub" onsubmit="response(this);return false;" onmouseover="on=true" onmouseout="on=false">
+                <p id="pop-err"></p>
                 <p id="pop-info"></p>
-                <select name="" id="pop-vehicles" required>
+                <!-- <select name="" id="pop-vehicles" required>
                     <option value="">Select a vehicle</option>
-                </select>
+                </select> -->
+
+                <center id="pop-vehicles">
+
+                </center>
                 <div>
                     <button class="btn btn-primary">Send</button>
                     <!-- <button type="reset" onclick="toggle($I('pop'))">Cancel</button> -->
@@ -137,17 +142,20 @@
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-database.js"></script>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script>
-            var firebaseConfig = {
-                apiKey: fireKey,
-                authDomain: "siren-5f6ff.firebaseapp.com",
-                databaseURL: "https://siren-5f6ff.firebaseio.com",
-                projectId: "siren-5f6ff",
-                storageBucket: "siren-5f6ff.appspot.com",
-                messagingSenderId: "924664842531",
-                appId: "1:924664842531:web:5d7d22a62381344e"
-            };
-            firebase.initializeApp(firebaseConfig);
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCyQl-FJ2dhphUukQpu521juT6WMPYM2Io",
+            authDomain: "siren1.firebaseapp.com",
+            databaseURL: "https://siren1.firebaseio.com",
+            projectId: "siren1",
+            storageBucket: "",
+            messagingSenderId: "916346623249",
+            appId: "1:916346623249:web:c39b56e8cb313662"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
         </script>
 		<script src="./js/index.js"></script>
         <script id="map-cdn" async defer></script>

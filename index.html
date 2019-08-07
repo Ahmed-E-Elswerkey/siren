@@ -12,7 +12,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8" />
     <meta name="keywords" content="Lite Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-	SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <meta name="title" content="Siren">
+    <meta name="description" content="A platform to organize the connection and timing between the accident and the ambulance">
+    <meta name="keywords" content="siren,ambulance,emergency reporting,swerky,elswerkey,ahmed elswerky,elswerky,web application">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="author" content="Ahmed Elswerky">
     <script>
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -81,6 +88,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </button>
                         </li>
                         <li class="reg hide">
+                            <button type="button" id="st-name" class="btn  ml-lg-2 w3ls-btn" onclick="">
+                                
+                            </button>
+                        </li>
+                        <li class="reg hide">
                             <button type="button" class="btn  ml-lg-2 w3ls-btn" onclick="firebase.auth().signOut();window.location.reload()">
                                 Log Out
                             </button>
@@ -132,6 +144,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <!-- register form grid -->
                     <div class="register-top1">
                         <form action="" method="post" onsubmit="stationReg();return false">
+                            <div id="sign-err"></div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2 d-md-flex align-items-end justify-content-end px-md-0">
@@ -562,6 +575,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
                 <div class="modal-body">
                     <form action="" method="post" onsubmit="stationLog();return false;">
+                        <div id="log-err"></div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Email</label>
                             <input type="text" class="form-control" placeholder=" " name="Name" id="log-email" required="">
@@ -657,23 +671,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="./js/keys.js"></script>
     
     <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-database.js"></script>
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyClyHhkF9J0gB8MLaqhiWZTwynPE-FXygM",
-            authDomain: "siren-5f6ff.firebaseapp.com",
-            databaseURL: "https://siren-5f6ff.firebaseio.com",
-            projectId: "siren-5f6ff",
-            storageBucket: "siren-5f6ff.appspot.com",
-            messagingSenderId: "924664842531",
-            appId: "1:924664842531:web:5d7d22a62381344e"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        </script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-database.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCyQl-FJ2dhphUukQpu521juT6WMPYM2Io",
+        authDomain: "siren1.firebaseapp.com",
+        databaseURL: "https://siren1.firebaseio.com",
+        projectId: "siren1",
+        storageBucket: "",
+        messagingSenderId: "916346623249",
+        appId: "1:916346623249:web:c39b56e8cb313662"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    </script>
 		<script src="./js/index.js"></script>
 </body>
 

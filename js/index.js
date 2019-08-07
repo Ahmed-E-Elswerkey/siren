@@ -16,6 +16,12 @@ function $I(m){
 function $C(m){
     return document.getElementsByClassName(m)
 }
+function fill(e,t,w='equal'){
+    if(w == 'plus')
+        e.innerHTML += t
+    if(w == 'equal')
+        e.innerHTML = t
+}
 
 function errorHandler(err) {
    if(err.code == 1) {
@@ -50,50 +56,74 @@ function sendReq(e){
 }
 var lat,long,uid, reqsRev
 var vehicelsNum = 0,tot=0
+
 window.onload = ()=>{
     firebase.auth().onAuthStateChanged(u=>{
         if(u){
-            if($I('reqs') != undefined)
-               prepareReqs()
+            if($I('reqs') != undefined){
+                prepareReqs()
+                ref.child('Customers Requests').on('child_added',n=>{
+                    if(vehicelsNum>0){
+                        calcDistance(n)
+                    }
+                    else clean_reqs()
+                })
+                ref.child('Customers Requests').on('child_changed',n=>{
+                    if(vehicelsNum>0){
+                        calcDistance(n)
+                    }
+                    else clean_reqs()
+                })
+                ref.child('Customers Requests').on('value',n=>{
+                    fill($I('reqs'),'')
+                    n.forEach(i=>reqBody(i))
+                })
+            }
             hideReg()
             uid = u.uid
             ref.child('stations/'+uid).once('value',m=>{
-                $I('st-name').innerHTML = m.val().name
+                fill($I('st-name'),m.val().name,'equal')
             })
             ref.child('stations/'+uid+'/vehicles').on('value',m=>{
-                // [].forEach.call($C('vehicle'),e=>{
-                //     e.remove()
-                // })
-                // $I('pop-vehicles').innerHTML = '<option value="">Select a vehicle</option>'
-                vehicelsNum = 0
-                tot=0
-                m.forEach(d=>{tot++
-                    if(d.val().status == '0'){
-                        vehicelsNum++
-                        var op = dc('option')
-                        op.classList.add('vehicle')
-                        op.innerHTML = 'Vehicle '
-                        op.setAttribute('data-key',d.key)
-                        op.value = op.innerHTML += d.val().number
-                        $I('pop-vehicles').appendChild(op)
-                    }
-                })
-                if(vehicelsNum == 0 && $I('reqs') != undefined){
-                    $I('reqs').innerHTML = '<center>No vehicels available, Customers Requests are hidden</center>'
-                    ref.child('stations/'+uid).update({vehNum:'0'})
-                    cl('veh num 0')
-                    ref.child('Customers Requests').once('value',n=>{
-                        n.forEach(d=>{cl('cleaning')
-                            if(d.val().status == '1' && d.val().nearestStation == uid)
-                                ref.child('Customers Requests/'+d.key).update({nearestStation:'',status:'0'})
-                        })
+                setTimeout(()=>{
+                    [].forEach.call($C('vehicle'),e=>{
+                        e.remove()
                     })
-                }
-                else if(vehicelsNum > 0  && $I('reqs') != undefined){
-                    ref.child('stations/'+uid).update({vehNum:vehicelsNum})
-                    forcedDisplay()
-                }
-                $I('veh-num').innerHTML = 'number of vehicles available = '+vehicelsNum + ' from '+tot + ' registered'
+                    fill($I('pop-vehicles'),'','equal')
+                    vehicelsNum = 0
+                    tot=0
+                    m.forEach(d=>{
+                        tot++
+                        if(d.val().status == '0'){
+                            var lab = dc('label'),
+                            inp = dc('input'),
+                            br = dc('br')
+                            
+                            inp.type = 'checkbox'
+                            inp.setAttribute('name','vehicle')
+                            // inp.setAttribute('data-key',d.key)
+                            vehicelsNum++
+                            inp.onchange = ()=>{
+                                vehiclesKeys.push(d.key)
+                                cl('as')
+                            }
+                            lab.classList.add('vehicle')
+                            fill(lab,'Vehicle ' + d.val().number + ' ')
+                            lab.appendChild(inp)
+                            $I('pop-vehicles').appendChild(lab)
+                            $I('pop-vehicles').appendChild(br)
+                        }
+                    })
+                    if(vehicelsNum == 0 && $I('reqs') != undefined){
+                        clean_reqs()
+                    }
+                    else if(vehicelsNum > 0  && $I('reqs') != undefined){
+                        ref.child('stations/'+uid).update({vehNum:vehicelsNum})
+                        forcedDisplay()
+                    }
+                    $I('veh-num').innerHTML = 'number of vehicles available = '+vehicelsNum + ' from '+tot + ' registered'
+
+                },200)
             })
         }
         else{
@@ -103,10 +133,23 @@ window.onload = ()=>{
     })
 }
 
+function clean_reqs(){
+    $I('reqs').innerHTML = '<center>No vehicels available, Customers Requests are hidden</center>'
+    ref.child('stations/'+uid).update({vehNum:'0'})
+    cl('veh num 0')
+    ref.child('Customers Requests').once('value',n=>{
+        n.forEach(d=>{cl('cleaning')
+            if(d.val().status == '1' && d.val().nearestStation == uid)
+                ref.child('Customers Requests/'+d.key).update({nearestStation:'',status:'0'})
+        })
+    })
+}
+
 var req,sta
 var Requests = [],stations = [],indexes = []
 function prepareReqs(a){
-    ref.child('stations').once('value',m=>{
+    ref.child('stations').on('value',m=>{
+        stations=[]
         m.forEach(d=>{
             var cache = {
                 "lat":d.val().lat,
@@ -114,33 +157,17 @@ function prepareReqs(a){
                 "key":d.key
             }
             if(d.val().vehNum != '0')
-            stations.push(cache)
+                stations.push(cache)
         })
         sta = stations
-    }).then(()=>{
-        displayReqs()
     })
 }
 
-function displayReqs(){
-    cl('display')
-    ref.child('Customers Requests').orderByChild('key').on('child_added',n=>{
-        if(vehicelsNum>0){
-            calcDistance(n)
-            cl('calcing')
-        }
-        
-    })
-    ref.child('Customers Requests').orderByChild('key').on('value',n=>{
-        $I('reqs').innerHTML=''
-        n.forEach(i=>reqBody(i))
-    })
-}
 
 function forcedDisplay(){
     ref.child('Customers Requests').once('value',i=>{
         i.forEach(n=>{
-            if(n.val().status == '1')
+            if(n.val().status == '0')
                 calcDistance(n)
         })
 
@@ -179,21 +206,21 @@ function calcDistance(d){
         }, callback);
 
         function callback(response, status) {
-                var i=0,s = response.rows[0].elements[0].distance.value,stationIndex=0
-                response.rows[0].elements.forEach(f=>{
-                    cl(f.distance.value)
-                    if(f.distance.value < s){
-                        s = f.distance.value
-                        stationIndex = i%stations.length
-                    }
-                    i++
-                })
-                ref.child('Customers Requests/'+d.key).update({
-                    nearestStation:stations[stationIndex].key,
-                    status:'1'
-                })
-                var cachee = {[d.key]:stationIndex}
-                indexes.push(cachee)
+            var i=0,s = response.rows[0].elements[0].distance.value,stationIndex=0
+            response.rows[0].elements.forEach(f=>{
+                cl(f.distance.value)
+                if(f.distance.value < s){
+                    s = f.distance.value
+                    stationIndex = i%stations.length
+                }
+                i++
+            })
+            ref.child('Customers Requests/'+d.key).update({
+                nearestStation:stations[stationIndex].key,
+                status:'1'
+            })
+            var cachee = {[d.key]:stationIndex}
+            indexes.push(cachee)
         }
     }
 }
@@ -207,8 +234,8 @@ function reqBody(n){
         info = dc('p'),
         loc = dc('div'),
         respond = dc('button')
-
-        if(n.val().info != undefined){
+        cl('dis req')
+        if(n.val().lat != undefined){
             latLng = new google.maps.LatLng(Number(n.val().lat), Number(n.val().long))
             var mapOptions = {
                 center: latLng,
@@ -252,7 +279,7 @@ function reqBody(n){
             });
             marker.setMap(map);
     
-            info.innerHTML = n.val().g
+            info.innerHTML = n.val().info
             respond.setAttribute('for', 'pop-checkbox')
             respond.innerHTML = 'Respond'
             respond.setAttribute("onclick","\
@@ -269,46 +296,56 @@ function reqBody(n){
         $I('reqs').appendChild(req)
     }
 }
-
+var vehiclesKeys =[]
 function response(e){
-    if(e.getAttribute('data-key') != undefined){
-        ref.child('Customers Requests/'+e.getAttribute('data-key')).update({
-            status:'2',
-            vehicle:$I('pop-vehicles').value
-        })
-        ref.child('stations/'+uid+'/vehicles/'+$I('pop-vehicles').options[$I('pop-vehicles').selectedIndex].getAttribute('data-key')).update({
-            status:'1'
-        }).then(()=>{
-            $I('pop').classList.add('hide')
-            forcedDisplay()
-            ref.child('Customers Requests/'+e.getAttribute('data-key')).once('value',m=>{
-                // cl($I('pop-vehicles').options[$I('pop-vehicles').selectedIndex].getAttribute('data-key'))
-                var long,lat,inf
-                if(m.val().info == undefined){
-                    m.val().l.forEach(d=>{
-                        data[da] = d
-                        da++
-                    })
-                    lat = data[0],long = data[1]
-                    cl('data from g child ' + lat + ' ' + long)
-                    inf = ''
-                }
-                else {
-                    lat = m.val().lat,long = m.val().long
-                    inf = m.val().info
-                    cl('data from info child')
-                }
-                ref.child('accidents/'+$I('pop-vehicles').options[$I('pop-vehicles').selectedIndex].getAttribute('data-key')).set({
-                    [m.key]:{
-                        lat:lat,
-                        longtude:long,
-                        info:inf,
-                        status:m.val().status
-                    }
-                })
+    var checked=0;
+    [].forEach.call(document.querySelectorAll("input[name='vehicle']"),d=>{if(d.checked) checked++})
+    if(e.getAttribute('data-key') != undefined && checked > 0){
+        [].forEach.call(vehiclesKeys,f=>{
+            ref.child('Customers Requests/'+e.getAttribute('data-key')).update({
+                status:'2'
             })
+            ref.child('stations/'+uid+'/vehicles/'+f).update({
+                status:'1'
+            }).then(()=>{
+                $I('pop').classList.add('hide')
+                forcedDisplay()
+                ref.child('Customers Requests/'+e.getAttribute('data-key')).once('value',m=>{
+                    var long,lat,inf
+                    if(m.val().lat == undefined){
+                        m.val().l.forEach(d=>{
+                            data[da] = d
+                            da++
+                        })
+                        lat = data[0],long = data[1]
+                        inf = m.val().info
+                    }
+                    else {
+                        lat = m.val().lat,long = m.val().long
+                        inf = m.val().info
+                    }
+                    ref.child('accidents/'+f).set({
+                        [m.key]:{
+                            lat:lat,
+                            longtude:long,
+                            info:inf,
+                            status:m.val().status,
+                            station:uid
+                        }
+                    })
+                })
+                cl(vehiclesKeys)
+                vehiclesKeys = []
+            }).catch(e=>{
+                fill($I('pop-err'),e)
+            })
+
         })
+
+
     }
+    else if(checked == 0)
+        fill($I('pop-err'),'please select at least one vehicle')
 }
 
 
@@ -338,6 +375,8 @@ function stationReg(e){
                 long:long,
                 lat:lat
             })
+        }).catch(e=>{
+            fill($I('sign-err'),e.message)
         })
     })
 }
@@ -347,6 +386,8 @@ function stationLog(e){
     pass = $I('log-pass').value
     firebase.auth().signInWithEmailAndPassword(email,pass).then(()=>{
         $I('exampleModal').click()
+    }).catch(e=>{
+        fill($I('log-err'),e.message)
     })
 }
 
@@ -356,6 +397,12 @@ function toggle(m){
             m.classList.remove('hide')
         else m.classList.add('hide')
     }
+    if($I('pop-err') != undefined)
+        fill($I('pop-err'),'')
+    if($I('sign-err') != undefined)
+        fill($I('sign-err'),'')
+    if($I('log-err') != undefined)
+        fill($I('log-err'),'')
 }
 
 function addVeh(){

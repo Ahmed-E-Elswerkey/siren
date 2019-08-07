@@ -1,3 +1,3 @@
 # siren
 
-Emergency reporting platform, when someone sees an accident or something bed happened, he reports the incident then the application find the nearest responsible station and informs it
+Emergency reporting platform, A platform to organize the connection and timing between the accident and the ambulance
